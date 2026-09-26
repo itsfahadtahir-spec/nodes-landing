@@ -8,7 +8,7 @@ export function Footer() {
         <div className="max-w-md">
           <img src="/brand/nodes-lockup.svg" alt="Nodes · Controlled Reconciliation Workspace" className="h-10 w-auto" />
           <p className="mt-4 text-sm leading-6 text-neutral-600">
-            A finance transformation prototype by Fahad. Synthetic data only. Limitations documented in the
+            A finance transformation prototype by Fahad. Synthetic data, real logic. Limits documented in the
             repository.
           </p>
         </div>

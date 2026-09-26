@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nodes Hero Animation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/*
+  Nodes hero animation (vanilla HTML/CSS/JS, no dependencies).
+  Three scenes loop: 1 Load -> 2 Reconcile -> 3 Review.
+  Every figure shown is from the frozen August 2026 synthetic reference scenario.
+  Port note for React: keep the markup, move CSS into a module or Tailwind layer,
+  and replace the JS timer with a useEffect that sets `data-scene` on .nx-window.
+*/
+:root{
+  --teal-50:#ECFEFF;--teal-100:#CFFAFE;--teal-200:#A5F3FC;--teal-300:#67E8F9;--teal-400:#22D3EE;
+  --teal-500:#06B6D4;--teal-600:#0891B2;--teal-700:#0E7490;--teal-800:#155E75;--teal-900:#164E63;
+  --n0:#FFFFFF;--n50:#F8FAFC;--n100:#F1F5F9;--n200:#E2E8F0;--n300:#CBD5E1;--n500:#64748B;--n600:#475569;--n700:#334155;--n800:#1E293B;--n900:#0F172A;
+  --green:#15803D;--green-s:#F0FDF4;--amber:#A16207;--amber-s:#FFFBEB;--amber-b:#F3D9A4;
+  --ai:#5B4BC4;--ai-s:#F7F5FF;--ai-b:#DED8FF;
+  --ease:cubic-bezier(.2,.8,.2,1);
+  --ui:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;padding:32px 16px;background:linear-gradient(180deg,#F8FAFC,#ECFEFF);font-family:var(--ui);color:var(--n900)}
+
+/* ---------- window ---------- */
+.nx-window{width:100%;max-width:620px;background:var(--n0);border:1px solid var(--n200);border-radius:12px;box-shadow:0 1px 2px rgb(15 23 42/.05),0 24px 48px -12px rgb(14 116 144/.18);overflow:hidden;font-size:13px;line-height:1.45}
+.nx-bar{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--n200);background:var(--n50)}
+.nx-bar svg{flex:none}
+.nx-bar .t{font-weight:700;letter-spacing:-.01em}
+.nx-bar .s{color:var(--n500);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nx-bar .run{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--n600);background:var(--n0);border:1px solid var(--n200);border-radius:999px;padding:2px 8px;white-space:nowrap}
+.nx-stage{display:grid;padding:18px}
+.nx-scene{grid-area:1/1;opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity 360ms var(--ease),transform 360ms var(--ease),visibility 0s 360ms}
+.nx-scene.on{opacity:1;visibility:visible;transform:none;transition:opacity 360ms var(--ease),transform 360ms var(--ease)}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal-700);margin:0 0 10px}
+.num{font-variant-numeric:tabular-nums lining-nums}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* reveal helper: children fade in with stagger while scene is on */
+.rv{opacity:0;transform:translateY(4px);transition:opacity 320ms var(--ease),transform 320ms var(--ease)}
+.on .rv{opacity:1;transform:none}
+.on .d1{transition-delay:150ms}.on .d2{transition-delay:350ms}.on .d3{transition-delay:550ms}.on .d4{transition-delay:900ms}.on .d5{transition-delay:1500ms}.on .d6{transition-delay:2300ms}.on .d7{transition-delay:3100ms}
+
+/* ---------- scene 1: load ---------- */
+.s1{display:grid;grid-template-columns:1fr 150px;gap:0 8px;align-items:center;position:relative}
+.nx-scene{align-content:center}
+.sources{display:grid;gap:10px;position:relative;z-index:1}
+.src{border:1px solid var(--n200);border-radius:8px;padding:10px 12px;background:var(--n0)}
+.src b{display:block;font-weight:650}
+.src span{color:var(--n500);font-size:12px}
+.engine{display:grid;justify-items:center;gap:10px;position:relative;z-index:1}
+.engine .tile{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,var(--teal-600),var(--teal-900));display:grid;place-items:center;box-shadow:0 0 0 0 rgb(6 182 212/.35)}
+.on .engine .tile{animation:pulse 1.6s var(--ease) 700ms infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgb(6 182 212/.35)}70%{box-shadow:0 0 0 14px rgb(6 182 212/0)}100%{box-shadow:0 0 0 0 rgb(6 182 212/0)}}
+.checks{grid-column:1/-1;list-style:none;margin:16px 0 0;padding:12px 0 0;border-top:1px solid var(--n200);display:flex;flex-wrap:wrap;gap:8px 18px;font-size:12px;color:var(--n700)}
+.checks li{display:flex;gap:6px;align-items:center;white-space:nowrap}
+.checks li::before{content:"";width:12px;height:12px;border-radius:3px;border:1.5px solid var(--teal-700);background:var(--teal-50) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 6.2 5 8l4-4.2' fill='none' stroke='%230E7490' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/10px no-repeat}
+.wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.wires path{fill:none;stroke:var(--teal-200);stroke-width:1.5}
+.wires circle{fill:var(--teal-600)}
+.s1-cap{grid-column:1/-1;margin:10px 0 0;color:var(--n600);font-size:12px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.stats div{border:1px solid var(--n200);border-radius:8px;padding:9px 12px;background:var(--n50)}
+.stats span{display:block;color:var(--n500);font-size:11.5px}
+.stats b{font-size:15px;letter-spacing:-.01em}
+
+/* ---------- scene 2: reconcile ---------- */
+.big{display:flex;align-items:baseline;gap:8px;margin-bottom:12px}
+.big .v{font-size:36px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.big .l{color:var(--n600)}
+.bar{display:flex;height:14px;border-radius:4px;overflow:hidden;background:var(--n100);margin-bottom:14px}
+.bar i{display:block;height:100%;width:0;transition:width 1100ms var(--ease)}
+.bar .a{background:var(--green)}
+.bar .b{background:repeating-linear-gradient(135deg,#22A055 0 4px,#15803D 4px 8px)}
+.bar .c{background:#D99A1E}
+.on .bar .a{width:88%;transition-delay:600ms}
+.on .bar .b{width:7%;transition-delay:1000ms}
+.on .bar .c{width:5%;transition-delay:1400ms}
+.legend{display:grid;gap:0;border:1px solid var(--n200);border-radius:8px;overflow:hidden}
+.legend div{display:grid;grid-template-columns:14px 1fr auto auto;gap:10px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--n200)}
+.legend div:last-child{border-bottom:0}
+.legend .sw{width:10px;height:10px;border-radius:2px}
+.legend .ct{font-weight:700;text-align:right;min-width:40px}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:999px;border:1px solid;white-space:nowrap}
+.badge.ok{color:var(--green);background:var(--green-s);border-color:#BBE5C8}
+.badge.rv2{color:var(--amber);background:var(--amber-s);border-color:var(--amber-b)}
+.badge.ai{color:var(--ai);background:var(--ai-s);border-color:var(--ai-b)}
+.s2-foot{margin:12px 0 0;color:var(--n500);font-size:12px}
+
+/* ---------- scene 3: review ---------- */
+.case-h{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:center;margin-bottom:12px}
+.case-h .id{font-family:var(--mono);font-weight:600;font-size:13px}
+.case-h .k{color:var(--n500);font-size:12px}
+.s3{display:grid;grid-template-columns:1fr 1.15fr;gap:12px}
+.panel{border:1px solid var(--n200);border-radius:8px;padding:10px 12px;background:var(--n0)}
+.panel h4{margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--n500)}
+.calc{display:grid;gap:3px;font-size:12px}
+.calc div{display:flex;justify-content:space-between;gap:10px}
+.calc span:first-child{color:var(--n600)}
+.calc .tot{border-top:1px solid var(--n200);margin-top:4px;padding-top:6px;font-weight:700;color:var(--n900)}
+.calc .tot span:first-child{color:var(--n900)}
+.cands{display:grid;gap:8px}
+.cand{border:1px solid var(--n200);border-radius:8px;padding:8px 10px;display:grid;grid-template-columns:1fr auto;gap:2px 10px;font-size:12px;transition:border-color 300ms var(--ease),background 300ms var(--ease)}
+.cand .rid{font-family:var(--mono);font-weight:600;font-size:11.5px}
+.cand .meta{color:var(--n500);font-size:11px}
+.cand .amt{font-weight:700;text-align:right}
+.cand .tag{grid-column:1/-1;margin-top:4px;font-size:11px;color:var(--amber);font-weight:600;opacity:0;transition:opacity 300ms var(--ease)}
+.on .cand{animation:scan 2.4s var(--ease) 1.2s both}
+.on .cand + .cand{animation-name:scan2}
+@keyframes scan{0%,100%{border-color:var(--n200);background:var(--n0)}20%,35%{border-color:var(--teal-400);background:var(--teal-50)}55%{border-color:var(--n200);background:var(--n0)}}
+@keyframes scan2{0%,40%{border-color:var(--n200);background:var(--n0)}55%,70%{border-color:var(--teal-400);background:var(--teal-50)}90%,100%{border-color:var(--n200);background:var(--n0)}}
+.on .cand.done{border-color:var(--amber-b);background:var(--amber-s);animation:none}
+.on .cand.done .tag{opacity:1}
+.ai-note{background:var(--ai-s);border-color:var(--ai-b)}
+.ai-note p{margin:6px 0 0;font-size:12px;color:#3F358F}
+.human{border:1.5px solid var(--teal-600);border-left-width:4px}
+.human h4{color:var(--teal-800)}
+.human .sel{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--n300);border-radius:6px;padding:6px 8px;font-size:12px;color:var(--n500);margin:6px 0 8px}
+.human .btn{display:inline-flex;align-items:center;justify-content:center;width:100%;min-height:34px;border-radius:6px;background:var(--teal-700);color:#fff;font-weight:700;font-size:12px}
+.s3-cap{grid-column:1/-1;margin:2px 0 0;font-weight:700;color:var(--n900);font-size:13px}
+
+/* ---------- controls ---------- */
+.nx-steps{display:flex;gap:6px;padding:0 18px 16px;flex-wrap:wrap}
+.nx-steps button{appearance:none;border:1px solid var(--n200);background:var(--n0);color:var(--n600);border-radius:999px;padding:5px 10px 5px 8px;font:600 12px var(--ui);cursor:pointer;display:inline-flex;align-items:center;gap:6px;position:relative;overflow:hidden}
+.nx-steps button .i{font-family:var(--mono);font-size:11px;color:var(--n500)}
+.nx-steps button[aria-current="step"]{border-color:var(--teal-600);color:var(--teal-800);background:var(--teal-50)}
+.nx-steps button[aria-current="step"] .i{color:var(--teal-700)}
+.nx-steps button:focus-visible{outline:2px solid var(--teal-700);outline-offset:2px}
+.nx-steps .prog{position:absolute;left:0;bottom:0;height:2px;background:var(--teal-600);width:0}
+.playing .nx-steps button[aria-current="step"] .prog{animation:prog var(--dur,4000ms) linear forwards}
+@keyframes prog{to{width:100%}}
+
+@media (max-width:560px){
+  .s1{grid-template-columns:1fr 110px}
+  .engine .tile{width:52px;height:52px}
+  .checks li{white-space:normal}
+  .s3{grid-template-columns:1fr}
+  .nx-bar .s{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="nx-window" id="nx" data-scene="1" aria-roledescription="animation" aria-label="How Nodes works: load, reconcile, review">
+  <div class="nx-bar">
+    <svg width="22" height="22" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-width="4"><path d="M13,35 L13,13" stroke="#0891B2"/><path d="M13,13 L35,35" stroke="#06B6D4"/><path d="M35,35 L35,22" stroke="#0891B2"/></g><g fill="#0E7490"><circle cx="13" cy="35" r="4.75"/><circle cx="13" cy="13" r="4.75"/><circle cx="35" cy="35" r="4.75"/></g><circle cx="35" cy="13" r="4.1" fill="none" stroke="#0E7490" stroke-width="2.6"/></svg>
+    <span class="t">Nodes</span>
+    <span class="s">Controlled Reconciliation Workspace</span>
+    <span class="run">RUN · AUG 2026</span>
+  </div>
+
+  <div class="nx-stage" aria-live="polite">
+
+    <!-- Scene 1: Load -->
+    <section class="nx-scene s1-wrap" data-s="1" aria-label="Step 1, load source data">
+      <p class="eyebrow">1 · Drop in the files</p>
+      <div class="s1" id="s1">
+        <svg class="wires" id="wires" aria-hidden="true"></svg>
+        <div class="sources">
+          <div class="src rv d1" data-wire><b>ERP orders</b><span class="num">1,000 transaction rows</span></div>
+          <div class="src rv d2" data-wire><b>Payment provider</b><span>Transactions, fees, settlements</span></div>
+          <div class="src rv d3" data-wire><b>Bank statement</b><span class="mono">bank_aug_sep_2026.csv</span></div>
+        </div>
+        <div class="engine" id="engine">
+          <div class="tile rv d3"><svg width="40" height="40" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-width="4"><path d="M13,35 L13,13" stroke="#A5F3FC"/><path d="M13,13 L35,35" stroke="#67E8F9"/><path d="M35,35 L35,22" stroke="#A5F3FC"/></g><g fill="#fff"><circle cx="13" cy="35" r="4.75"/><circle cx="13" cy="13" r="4.75"/><circle cx="35" cy="35" r="4.75"/></g><circle cx="35" cy="13" r="4.1" fill="none" stroke="#fff" stroke-width="2.6"/></svg></div>
+        </div>
+        <ul class="checks">
+          <li class="rv d4">Duplicates checked</li>
+          <li class="rv d5">Fields validated</li>
+          <li class="rv d6">Source rows traced</li>
+        </ul>
+        <p class="s1-cap rv d6">Every row keeps its file name and row number. Nothing loses its paper trail.</p>
+      </div>
+    </section>
+
+    <!-- Scene 2: Reconcile -->
+    <section class="nx-scene" data-s="2" aria-label="Step 2, reconcile with rules">
+      <p class="eyebrow">2 · Tie out by rule</p>
+      <div class="big"><span class="v num" id="count">1,000</span><span class="l">ERP↔PSP outcomes assessed</span></div>
+      <div class="bar" role="img" aria-label="950 of 1,000 reconciled by rules, 50 sent to review"><i class="a"></i><i class="b"></i><i class="c"></i></div>
+      <div class="legend">
+        <div class="rv d3"><span class="sw" style="background:var(--green)"></span><span>Exact reference match</span><span class="badge ok">RECONCILED</span><span class="ct num">880</span></div>
+        <div class="rv d4"><span class="sw" style="background:repeating-linear-gradient(135deg,#22A055 0 3px,#15803D 3px 6px)"></span><span>Controlled fallback match</span><span class="badge ok">RECONCILED</span><span class="ct num">70</span></div>
+        <div class="rv d5"><span class="sw" style="background:#D99A1E"></span><span>Flagged, evidence attached</span><span class="badge rv2">REVIEW</span><span class="ct num">50</span></div>
+      </div>
+      <div class="stats rv d6"><div><span>Settlements calculated</span><b class="num">40</b></div><div><span>Expected net settlement</span><b class="num">AED 917,286.03</b></div></div>
+      <p class="s2-foot rv d7">Run it twice, get the same answer twice. No AI in any match.</p>
+    </section>
+
+    <!-- Scene 3: Review -->
+    <section class="nx-scene" data-s="3" aria-label="Step 3, review an exception">
+      <p class="eyebrow">3 · You sign off</p>
+      <div class="case-h rv d1">
+        <span class="id">SET-202608-033</span>
+        <span class="badge rv2">REVIEW REQUIRED</span>
+        <span class="k">Ambiguous bank candidate</span>
+      </div>
+      <div class="s3">
+        <div class="panel rv d1">
+          <h4>Settlement basis</h4>
+          <div class="calc num">
+            <div><span>PSP transactions</span><span>24</span></div>
+            <div><span>Gross</span><span>AED 24,999.81</span></div>
+            <div><span>Fees</span><span>-AED 499.98</span></div>
+            <div><span>VAT on fees</span><span>-AED 25.02</span></div>
+            <div class="tot"><span>Expected payout</span><span>AED 24,474.81</span></div>
+          </div>
+        </div>
+        <div class="panel rv d2">
+          <h4>Bank candidates</h4>
+          <div class="cands">
+            <div class="cand" id="c1"><span class="rid">BANK-202608-0039</span><span class="amt num">AED 24,474.81</span><span class="meta">Row 40 · 31 Aug 2026</span><span></span><span class="tag">Plausible match</span></div>
+            <div class="cand" id="c2"><span class="rid">BANK-202608-0041</span><span class="amt num">AED 24,474.81</span><span class="meta">Row 42 · 1 Sep 2026</span><span></span><span class="tag">Plausible match</span></div>
+          </div>
+        </div>
+        <div class="panel ai-note rv d6">
+          <span class="badge ai">AI EXPLANATION · ADVISORY</span>
+          <p>Both records equal the expected payout. The supplied evidence does not establish which one belongs to this settlement.</p>
+        </div>
+        <div class="panel human rv d7">
+          <h4>Your decision</h4>
+          <div class="sel"><span>Select disposition…</span><span aria-hidden="true">▾</span></div>
+          <span class="btn">Record review</span>
+        </div>
+        <p class="s3-cap rv d7">Nodes won’t guess. You decide.</p>
+      </div>
+    </section>
+  </div>
+
+  <nav class="nx-steps" aria-label="Animation steps">
+    <button type="button" data-go="1"><span class="i">1</span>Load<span class="prog"></span></button>
+    <button type="button" data-go="2"><span class="i">2</span>Reconcile<span class="prog"></span></button>
+    <button type="button" data-go="3"><span class="i">3</span>Review<span class="prog"></span></button>
+  </nav>
+</div>
+
+<script>
+(() => {
+  const root = document.getElementById('nx');
+  const scenes = [...root.querySelectorAll('.nx-scene')];
+  const steps = [...root.querySelectorAll('[data-go]')];
+  const DUR = { 1: 4200, 2: 5000, 3: 7500 };
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let cur = 0, timer = null, autoplay = !reduce, rafId = null;
+
+  function countUp() {
+    const el = document.getElementById('count');
+    if (reduce) { el.textContent = '1,000'; return; }
+    const t0 = performance.now(), d = 1100;
+    cancelAnimationFrame(rafId);
+    const tick = (t) => {
+      const p = Math.min(1, (t - t0) / d), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(1000 * e).toLocaleString('en-US');
+      if (p < 1) rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function candidates() {
+    const c = [document.getElementById('c1'), document.getElementById('c2')];
+    c.forEach((x) => x.classList.remove('done'));
+    setTimeout(() => c.forEach((x) => x.classList.add('done')), reduce ? 0 : 3700);
+  }
+
+  function show(n) {
+    cur = n;
+    root.dataset.scene = n;
+    scenes.forEach((s) => s.classList.toggle('on', +s.dataset.s === n));
+    steps.forEach((b) => {
+      const on = +b.dataset.go === n;
+      b.toggleAttribute('aria-current', on);
+      if (on) b.setAttribute('aria-current', 'step');
+      // restart progress bar
+      const p = b.querySelector('.prog'); p.style.animation = 'none'; p.offsetWidth; p.style.animation = '';
+    });
+    root.style.setProperty('--dur', DUR[n] + 'ms');
+    if (n === 1) drawWires();
+    if (n === 2) countUp();
+    if (n === 3) candidates();
+    clearTimeout(timer);
+    if (autoplay) timer = setTimeout(() => show(n === 3 ? 1 : n + 1), DUR[n]);
+  }
+
+  // Curved connectors from each source card to the engine tile, with a travelling dot.
+  function drawWires() {
+    const wrap = document.getElementById('s1'), svg = document.getElementById('wires');
+    const tile = wrap.querySelector('.tile'), box = wrap.getBoundingClientRect();
+    const tb = tile.getBoundingClientRect();
+    const tx = tb.left - box.left, ty = tb.top - box.top + tb.height / 2;
+    let html = '';
+    wrap.querySelectorAll('[data-wire]').forEach((el, i) => {
+      const b = el.getBoundingClientRect();
+      const x1 = b.right - box.left, y1 = b.top - box.top + b.height / 2;
+      const mx = (x1 + tx) / 2;
+      const d = `M${x1},${y1} C${mx},${y1} ${mx},${ty} ${tx},${ty}`;
+      html += `<path d="${d}"/>`;
+      if (!reduce) html += `<circle r="3"><animateMotion dur="1.6s" begin="${0.3 + i * 0.25}s" repeatCount="indefinite" path="${d}"/></circle>`;
+    });
+    svg.innerHTML = html;
+  }
+
+  steps.forEach((b) => b.addEventListener('click', () => {
+    autoplay = false; root.classList.remove('playing'); show(+b.dataset.go);
+  }));
+  addEventListener('resize', () => { if (cur === 1) drawWires(); });
+
+  if (autoplay) root.classList.add('playing');
+  // Reduced motion: open on the review scene, which carries the product's point, and let the viewer step.
+  const start = () => show(reduce ? 3 : 1);
+  document.fonts && document.fonts.ready ? document.fonts.ready.then(start) : start();
+})();
+</script>
+</body>
+</html>

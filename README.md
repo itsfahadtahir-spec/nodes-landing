@@ -4,7 +4,7 @@ Marketing/portfolio page for **Nodes — Controlled Reconciliation Workspace**
 (public brand of the Reconciliation Copilot project).
 
 - Stack: Vite, React 19, TypeScript, Tailwind CSS v4, Lucide icons, Inter + IBM Plex Mono (self-hosted).
-- Copy and claims: `nodes-landing-copy.md` handoff kit is the source of truth. Figures in the proof strip
+- Copy and claims: `docs/nodes-landing-copy.md` (handoff kit v3) is the source of truth. Figures in the proof strip
   and the review case are from the frozen August 2026 reference run and must not be edited without sign-off.
 - Brand tokens live in `src/styles.css` (`@theme`), taken from Brand & UI Guidelines v1 §30.
 - Hero animation: React port of `animation/nodes-hero-animation.html` in `src/sections/HeroAnimation.tsx`.
