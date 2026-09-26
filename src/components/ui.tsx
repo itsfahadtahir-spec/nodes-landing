@@ -78,6 +78,21 @@ export function ButtonLink({
   );
 }
 
+export function Badge({ tone, children }: { tone: "ok" | "review" | "ai"; children: ReactNode }) {
+  const cls = {
+    ok: "bg-green-surface text-green border-green/30",
+    review: "bg-amber-surface text-amber border-amber-border",
+    ai: "bg-ai-surface text-ai-text border-ai-border",
+  }[tone];
+  return (
+    <span
+      className={`inline-block whitespace-nowrap rounded border px-1.5 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] ${cls}`}
+    >
+      {children}
+    </span>
+  );
+}
+
 export function Mono({ children, className = "" }: { children: ReactNode; className?: string }) {
   return <span className={`font-mono num ${className}`}>{children}</span>;
 }

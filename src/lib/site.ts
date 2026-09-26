@@ -1,14 +1,29 @@
 // External destinations. Values marked TODO are confirmed with Fahad before launch
-// (see nodes-landing-copy.md §7). Keep the UTM convention on every outbound link.
+// (see docs/nodes-landing-copy.md §8). Keep the UTM convention on every outbound link.
+const workspace = import.meta.env.VITE_WORKSPACE_URL ?? "https://reconciliation-workspace.lovable.app";
+
+// August 2026 reference run on the production API (label: gate-13-full-live-evaluation).
+export const referenceRun = {
+  runId: import.meta.env.VITE_RUN_ID ?? "191def20-cacb-47b3-865e-bb44aac4491b",
+  // Review case for the SET-202608-033 ambiguous-bank-candidate event in that run.
+  case033Id: import.meta.env.VITE_CASE_033_ID ?? "2c492df3-730d-4952-a17e-4df8d47e9e82",
+} as const;
+
 export const links = {
-  workspace: import.meta.env.VITE_WORKSPACE_URL ?? "https://reconciliation-workspace.lovable.app",
+  workspace,
+  reviewQueue: `${workspace}/runs/${referenceRun.runId}/review-queue`,
   caseDeepLink:
     import.meta.env.VITE_CASE_DEEPLINK_URL ??
-    "https://reconciliation-workspace.lovable.app/review-queue", // TODO: direct link to SET-202608-033
+    `${workspace}/runs/${referenceRun.runId}/review-queue/${referenceRun.case033Id}`,
+  matchProof: (traceId: string) =>
+    `${workspace}/runs/${referenceRun.runId}/reconciled/${encodeURIComponent(traceId)}`,
   github: "https://github.com/itsfahadtahir-spec/reconciliation_copilot",
   githubWorkspace: "https://github.com/itsfahadtahir-spec/reconciliation-workspace",
+  tests: "https://github.com/itsfahadtahir-spec/reconciliation_copilot/tree/main/tests",
+  architecture: "https://github.com/itsfahadtahir-spec/reconciliation_copilot/tree/main/docs",
   linkedin: import.meta.env.VITE_LINKEDIN_URL ?? "https://www.linkedin.com/", // TODO
   cv: import.meta.env.VITE_CV_URL ?? "/fahad-cv.pdf", // TODO
+  email: import.meta.env.VITE_EMAIL ?? "", // TODO
 } as const;
 
 export type TrackEvent =
