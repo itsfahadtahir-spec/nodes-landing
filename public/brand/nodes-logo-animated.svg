@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="96" height="96" role="img" aria-label="Nodes">
+  <title>Nodes</title>
+  <!--
+    Build sequence follows the money: ERP -> Payment provider -> Settlement -> Bank.
+    The bank node is an open ring and its edge stops short: the final link is a human decision.
+    Plays once (about 2 s). Honors prefers-reduced-motion by showing the finished mark.
+    To replay in a page: clone the <svg> node, or toggle the "play" class on the root.
+  -->
+  <style>
+    .n { transform-box: fill-box; transform-origin: center; animation: pop 320ms cubic-bezier(.2,.8,.2,1) both; }
+    .e { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 320ms cubic-bezier(.2,.8,.2,1) forwards; }
+    .ring { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 520ms cubic-bezier(.2,.8,.2,1) forwards; }
+    .erp { animation-delay: 0ms; }
+    .e1  { animation-delay: 180ms; }
+    .psp { animation-delay: 460ms; }
+    .e2  { animation-delay: 620ms; }
+    .set { animation-delay: 900ms; }
+    .e3  { animation-delay: 1060ms; }
+    .ring{ animation-delay: 1400ms; }
+    @keyframes pop { from { transform: scale(0); opacity: 0; } 70% { transform: scale(1.18); opacity: 1; } to { transform: scale(1); opacity: 1; } }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      .n, .e, .ring { animation: none; stroke-dashoffset: 0; opacity: 1; transform: none; }
+    }
+  </style>
+  <g fill="none" stroke-linecap="round" stroke-width="4">
+    <path class="e e1" pathLength="1" d="M13,35 L13,13" stroke="#0891B2"/>
+    <path class="e e2" pathLength="1" d="M13,13 L35,35" stroke="#06B6D4"/>
+    <path class="e e3" pathLength="1" d="M35,35 L35,22" stroke="#0891B2"/>
+  </g>
+  <g fill="#0E7490">
+    <circle class="n erp" cx="13" cy="35" r="4.75"/>
+    <circle class="n psp" cx="13" cy="13" r="4.75"/>
+    <circle class="n set" cx="35" cy="35" r="4.75"/>
+  </g>
+  <circle class="ring" pathLength="1" cx="35" cy="13" r="4.1" fill="none" stroke="#0E7490" stroke-width="2.6" transform="rotate(90 35 13)"/>
+</svg>
