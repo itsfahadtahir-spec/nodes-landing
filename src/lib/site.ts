@@ -1,6 +1,6 @@
 // External destinations. Values marked TODO are confirmed with Fahad before launch
 // (see docs/nodes-landing-copy.md §8). Keep the UTM convention on every outbound link.
-const workspace = import.meta.env.VITE_WORKSPACE_URL ?? "https://reconciliation-workspace.lovable.app";
+const workspace = import.meta.env.VITE_WORKSPACE_URL ?? "https://reconciliation-studio.lovable.app";
 
 // August 2026 reference run on the production API (label: gate-13-full-live-evaluation).
 export const referenceRun = {
@@ -10,7 +10,7 @@ export const referenceRun = {
 } as const;
 
 export const links = {
-  workspace,
+  workspace: `${workspace}/runs`,
   reviewQueue: `${workspace}/runs/${referenceRun.runId}/review-queue`,
   caseDeepLink:
     import.meta.env.VITE_CASE_DEEPLINK_URL ??
