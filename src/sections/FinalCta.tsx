@@ -29,15 +29,14 @@ export function FinalCta() {
           </ButtonLink>
         </div>
         <p className="mt-6 text-sm text-neutral-600">
-          Hiring for finance transformation?{" "}
+          Hiring in finance?{" "}
           <a
-            href={links.linkedin}
+            href={links.portfolio}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => track("cta_linkedin_click", { location: "final" })}
             className="font-semibold text-teal-700 underline-offset-4 hover:underline"
           >
-            Let's talk on LinkedIn.
+            See my 10 years in the numbers.
           </a>
         </p>
       </div>

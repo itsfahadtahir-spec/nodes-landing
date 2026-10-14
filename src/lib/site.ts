@@ -21,8 +21,9 @@ export const links = {
   githubWorkspace: "https://github.com/itsfahadtahir-spec/reconciliation-workspace",
   tests: "https://github.com/itsfahadtahir-spec/reconciliation_copilot/tree/main/tests",
   architecture: "https://github.com/itsfahadtahir-spec/reconciliation_copilot/tree/main/docs",
-  linkedin: import.meta.env.VITE_LINKEDIN_URL || "https://www.linkedin.com/", // TODO
-  cv: import.meta.env.VITE_CV_URL || "/fahad-cv.pdf", // TODO
+  linkedin: import.meta.env.VITE_LINKEDIN_URL || "https://www.linkedin.com/in/fahadtahiruae/",
+  cv: import.meta.env.VITE_CV_URL || "https://fahadtahir.vercel.app/assets/cv/fahad-tahir-cv.pdf",
+  portfolio: "https://fahadtahir.vercel.app",
   email: import.meta.env.VITE_EMAIL || "", // TODO
 } as const;
 

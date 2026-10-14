@@ -5,7 +5,7 @@ import { links, track } from "../lib/site";
 
 const navLinks = [
   { href: "#how-it-works", label: "How it works" },
-  { href: "#review-case", label: "Case 033" },
+  { href: "#review-case", label: "Example case" },
   { href: "#proof", label: "Proof" },
   { href: "#about", label: "About" },
 ];

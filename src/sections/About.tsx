@@ -11,7 +11,8 @@ export function About() {
           <H2>Built by someone who's sat through month-end</H2>
           <p className="mt-6 text-lg leading-8 text-neutral-700">
             I'm Fahad. I've spent about ten years in finance and commercial roles, five of them at Canon in
-            financial analysis, reporting and an ERP migration. I've passed 9 of 13 ACCA papers.
+            financial analysis, reporting and an ERP migration. I've passed 9 of 13 ACCA papers, sitting SBR in
+            March 2027.
           </p>
           <p className="mt-4 text-lg leading-8 text-neutral-700">
             I built Nodes around one rule: automate what can be proven, explain what can't, and leave the judgment

@@ -38,6 +38,16 @@ export function Footer() {
             </li>
             <li>
               <a
+                href={links.portfolio}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-teal-800"
+              >
+                Portfolio
+              </a>
+            </li>
+            <li>
+              <a
                 href={links.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
