@@ -268,7 +268,7 @@ export function HeroAnimation({ initialScene = 1, autoplay: autoplayProp = true 
               </div>
               <span className="btn">Record review</span>
             </div>
-            <p className="s3-cap rv d7">Nodes won’t guess. You decide.</p>
+            <p className="s3-cap rv d7">Nodes won't guess. You decide.</p>
           </div>
         </section>
       </div>
