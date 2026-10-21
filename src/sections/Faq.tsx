@@ -1,27 +1,35 @@
 import { ChevronDown } from "lucide-react";
 import { H2, Section } from "../components/ui";
+import { links, track } from "../lib/site";
 
-// TODO(launch): confirm the "under the hood" answer with Fahad (docs/nodes-landing-copy.md §8.6).
-const faqs = [
+const faqs: { q: string; a: React.ReactNode }[] = [
   {
-    q: "Wait, is AI doing the accounting?",
-    a: "No. Every match, amount and exception type comes from rules. AI only summarises what the rules already found, and it's labelled \"advisory\" everywhere it appears.",
+    q: "What problem does Nodes solve?",
+    a: "Nodes helps structure high-volume reconciliation across ERP, payment-provider and bank records, while directing finance attention toward the exceptions that genuinely require investigation.",
   },
   {
-    q: "Is this real company data?",
-    a: "No. It's a synthetic August 2026 dataset built to look like an e-commerce business. Every correct answer was known in advance, which is how the results are scored.",
+    q: "Does AI perform the reconciliation?",
+    a: "No. Financial matching is handled using deterministic logic. AI is used only to help explain unresolved cases using the evidence available to the system.",
   },
   {
-    q: "Can I plug it into our ERP?",
-    a: "Not yet. This version works from file uploads. Live connections are a production job.",
+    q: "What happens when the evidence is unclear?",
+    a: "Nodes does not force a match. The case remains open and is routed to Finance for review and decision.",
   },
   {
-    q: "What if two records both look right?",
-    a: "Nodes stops and opens a case with both records attached. It never picks between two plausible matches. Case 033 above is a live example.",
-  },
-  {
-    q: "What's under the hood?",
-    a: "Python and FastAPI for the engine, React and TypeScript for the workspace, Supabase for storage, an OpenAI model for the summaries.",
+    q: "Can I see the full workflow?",
+    a: (
+      <>
+        Yes. The public site intentionally focuses on the product, results and control model. A demo can go deeper
+        into the workflow, exception handling and product decisions.{" "}
+        <a
+          href={links.demoRequest}
+          className="font-semibold text-teal-700 underline-offset-4 hover:underline"
+          onClick={() => track("cta_demo_request", { location: "faq" })}
+        >
+          Request a demo
+        </a>
+      </>
+    ),
   },
 ];
 
@@ -29,7 +37,7 @@ export function Faq() {
   return (
     <Section id="faq">
       <div className="mx-auto max-w-3xl">
-        <H2>Questions finance people ask</H2>
+        <H2>Questions</H2>
         <div className="mt-10 divide-y divide-neutral-200 border-y border-neutral-200">
           {faqs.map((f) => (
             <details key={f.q} className="group py-2">

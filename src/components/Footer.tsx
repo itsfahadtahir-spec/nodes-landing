@@ -8,34 +8,12 @@ export function Footer() {
         <div className="max-w-md">
           <img src="/brand/nodes-lockup.svg" alt="Nodes · Controlled Reconciliation Workspace" className="h-10 w-auto" />
           <p className="mt-4 text-sm leading-6 text-neutral-600">
-            A finance transformation prototype by Fahad. Synthetic data, real logic. Limits documented in the
-            repository.
+            Finance-controlled reconciliation. Rules reconcile. AI explains exceptions. Finance decides.
           </p>
+          <p className="mt-2 text-sm leading-6 text-neutral-600">Built by Fahad Tahir.</p>
         </div>
         <nav aria-label="Footer">
           <ul className="flex gap-6 text-sm font-medium text-neutral-700">
-            <li>
-              <a
-                href={links.workspace}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-teal-800"
-                onClick={() => track("cta_workspace_click", { location: "footer" })}
-              >
-                Workspace
-              </a>
-            </li>
-            <li>
-              <a
-                href={links.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-teal-800"
-                onClick={() => track("cta_github_click", { location: "footer" })}
-              >
-                GitHub
-              </a>
-            </li>
             <li>
               <a
                 href={links.portfolio}
@@ -55,6 +33,15 @@ export function Footer() {
                 onClick={() => track("cta_linkedin_click", { location: "footer" })}
               >
                 LinkedIn
+              </a>
+            </li>
+            <li>
+              <a
+                href={links.demoRequest}
+                className="hover:text-teal-800"
+                onClick={() => track("cta_demo_request", { location: "footer" })}
+              >
+                Request demo
               </a>
             </li>
           </ul>

@@ -152,7 +152,7 @@ export function HeroAnimation({ initialScene = 1, autoplay: autoplayProp = true 
             <div className="sources">
               <div className="src rv d1" ref={(el) => { sourceRefs.current[0] = el; }}>
                 <b>ERP orders</b>
-                <span className="num">1,000 transaction rows</span>
+                <span className="num">1,000+ transactions</span>
               </div>
               <div className="src rv d2" ref={(el) => { sourceRefs.current[1] = el; }}>
                 <b>Payment provider</b>
@@ -160,7 +160,7 @@ export function HeroAnimation({ initialScene = 1, autoplay: autoplayProp = true 
               </div>
               <div className="src rv d3" ref={(el) => { sourceRefs.current[2] = el; }}>
                 <b>Bank statement</b>
-                <span className="mono">bank_aug_sep_2026.csv</span>
+                <span>Statement lines</span>
               </div>
             </div>
             <div className="engine">
@@ -181,9 +181,9 @@ export function HeroAnimation({ initialScene = 1, autoplay: autoplayProp = true 
           <p className="eyebrow">2 · Tie out by rule</p>
           <div className="big">
             <span className="v num">{reduce ? "1,000" : count}</span>
-            <span className="l">ERP↔PSP outcomes assessed</span>
+            <span className="l">Transactions assessed</span>
           </div>
-          <div className="bar" role="img" aria-label="950 of 1,000 reconciled by rules, 50 sent to review">
+          <div className="bar" role="img" aria-label="Most transactions reconciled by rules, the remainder sent to review">
             <i className="a" />
             <i className="b" />
             <i className="c" />
@@ -191,31 +191,15 @@ export function HeroAnimation({ initialScene = 1, autoplay: autoplayProp = true 
           <div className="legend">
             <div className="rv d3">
               <span className="sw" style={{ background: "var(--color-green)" }} />
-              <span>Exact reference match</span>
+              <span>Reconciled by deterministic rules</span>
               <span className="badge ok">RECONCILED</span>
-              <span className="ct num">880</span>
-            </div>
-            <div className="rv d4">
-              <span className="sw" style={{ background: "repeating-linear-gradient(135deg,#22A055 0 3px,#15803D 3px 6px)" }} />
-              <span>Controlled fallback match</span>
-              <span className="badge ok">RECONCILED</span>
-              <span className="ct num">70</span>
+              <span className="ct num">95%</span>
             </div>
             <div className="rv d5">
               <span className="sw" style={{ background: "#D99A1E" }} />
               <span>Flagged, evidence attached</span>
               <span className="badge rv2">REVIEW</span>
-              <span className="ct num">50</span>
-            </div>
-          </div>
-          <div className="stats rv d6">
-            <div>
-              <span>Settlements calculated</span>
-              <b className="num">40</b>
-            </div>
-            <div>
-              <span>Expected net settlement</span>
-              <b className="num">AED 917,286.03</b>
+              <span className="ct num">5%</span>
             </div>
           </div>
           <p className="s2-foot rv d7">Run it twice, get the same answer twice. No AI in any match.</p>
@@ -224,32 +208,18 @@ export function HeroAnimation({ initialScene = 1, autoplay: autoplayProp = true 
         <section className={`nx-scene ${scene === 3 ? "on" : ""}`} aria-label="Step 3, review an exception" aria-hidden={scene !== 3}>
           <p className="eyebrow">3 · You sign off</p>
           <div className="case-h rv d1">
-            <span className="id">SET-202608-033</span>
+            <span className="id">Exception under review</span>
             <span className="badge rv2">REVIEW REQUIRED</span>
             <span className="k">Ambiguous bank candidate</span>
           </div>
           <div className="s3">
-            <div className="panel rv d1">
-              <h4>Settlement basis</h4>
-              <div className="calc num">
-                <div><span>PSP transactions</span><span>24</span></div>
-                <div><span>Gross</span><span>AED 24,999.81</span></div>
-                <div><span>Fees</span><span>-AED 499.98</span></div>
-                <div><span>VAT on fees</span><span>-AED 25.02</span></div>
-                <div className="tot"><span>Expected payout</span><span>AED 24,474.81</span></div>
-              </div>
-            </div>
             <div className="panel rv d2">
               <h4>Bank candidates</h4>
               <div className="cands">
-                {[
-                  { id: "BANK-202608-0039", meta: "Row 40 · 31 Aug 2026" },
-                  { id: "BANK-202608-0041", meta: "Row 42 · 1 Sep 2026" },
-                ].map((c) => (
-                  <div key={c.id} className={`cand ${done ? "done" : ""}`}>
-                    <span className="rid">{c.id}</span>
-                    <span className="amt num">AED 24,474.81</span>
-                    <span className="meta">{c.meta}</span>
+                {["Candidate record A", "Candidate record B"].map((c) => (
+                  <div key={c} className={`cand ${done ? "done" : ""}`}>
+                    <span className="rid">{c}</span>
+                    <span className="meta">Bank statement</span>
                     <span />
                     <span className="tag">Plausible match</span>
                   </div>
@@ -258,7 +228,7 @@ export function HeroAnimation({ initialScene = 1, autoplay: autoplayProp = true 
             </div>
             <div className="panel ai-note rv d6">
               <span className="badge ai">AI EXPLANATION · ADVISORY</span>
-              <p>Both records equal the expected payout. The supplied evidence does not establish which one belongs to this settlement.</p>
+              <p>Two bank records satisfy the available matching evidence. The supplied evidence does not establish which one belongs to this settlement.</p>
             </div>
             <div className="panel human rv d7">
               <h4>Your decision</h4>

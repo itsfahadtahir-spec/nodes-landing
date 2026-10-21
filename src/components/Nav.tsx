@@ -4,8 +4,8 @@ import { ButtonLink, Container } from "./ui";
 import { links, track } from "../lib/site";
 
 const navLinks = [
+  { href: "#product", label: "Product" },
   { href: "#how-it-works", label: "How it works" },
-  { href: "#review-case", label: "Example case" },
   { href: "#proof", label: "Proof" },
   { href: "#about", label: "About" },
 ];
@@ -46,12 +46,11 @@ export function Nav() {
 
         <div className="flex items-center gap-2">
           <ButtonLink
-            href={links.workspace}
-            external
+            href={links.demoRequest}
             className="min-h-10 px-4"
-            onClick={() => track("cta_workspace_click", { location: "nav" })}
+            onClick={() => track("cta_demo_request", { location: "nav" })}
           >
-            Open workspace
+            Request demo
           </ButtonLink>
           <button
             type="button"
@@ -80,6 +79,15 @@ export function Nav() {
                 </a>
               </li>
             ))}
+            <li>
+              <a
+                href={links.demoRequest}
+                className="block py-3 text-base font-semibold text-teal-700"
+                onClick={() => setOpen(false)}
+              >
+                Request demo
+              </a>
+            </li>
           </ul>
         </nav>
       )}

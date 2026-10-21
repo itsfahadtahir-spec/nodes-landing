@@ -1,12 +1,19 @@
 import { H2, Section } from "../components/ui";
 
-const rows: [string, string][] = [
-  ["Export three files", "Load one run"],
-  ["Clean columns until they line up", "Validation runs before anything else"],
-  ["XLOOKUP and hope", "Rules tie out what they can prove"],
-  ["Ctrl+F through the bank file", "The two rows that matter, already pulled"],
-  ["Email the payments team", "A short summary of what's known and what isn't"],
-  ["Write it all up for audit", "Every step logged as it happens"],
+const before = [
+  "Fragmented source files",
+  "Repetitive manual matching",
+  "Time spent tracing exceptions",
+  "Evidence scattered across systems",
+  "Unclear review handoffs",
+];
+
+const withNodes = [
+  "Repeatable matches handled automatically",
+  "Exceptions surfaced for review",
+  "Relevant evidence brought together",
+  "Finance judgment focused where it matters",
+  "Clear ownership of the final decision",
 ];
 
 function Column({ title, items, variant }: { title: string; items: string[]; variant: "without" | "with" }) {
@@ -38,27 +45,21 @@ export function BeforeAfter() {
   return (
     <Section id="problem" tone="muted">
       <div className="max-w-3xl">
-        <H2>Matching is the easy part. The leftovers eat the close.</H2>
-        <p className="mt-5 text-lg leading-8 text-neutral-600">
-          You know the routine. Export from the ERP. Pull the settlement file from the payment provider. Download the
-          bank statement. Build the XLOOKUPs. Most lines tie out before lunch.
+        <H2>Reconciliation gets difficult where the exceptions begin.</H2>
+        <p className="mt-5 text-lg leading-8 text-neutral-600">High-volume matching is only part of the work.</p>
+        <p className="mt-4 text-lg leading-8 text-neutral-600">
+          Finance teams lose time tracing why records disagree, gathering evidence across different sources and
+          deciding what can safely be cleared.
         </p>
         <p className="mt-4 text-lg leading-8 text-neutral-600">
-          Then come the leftovers. A payout that doesn't match any settlement. Two bank lines for exactly the same
-          amount. A fee that's a few fils out. Each one means another trip through the bank file, another email to
-          the payments team, and another note in the working papers so the auditors can follow your logic at
-          year-end.
+          Nodes is designed to make that investigation more structured, visible and controlled.
         </p>
       </div>
 
       <div className="mt-12 grid gap-6 md:grid-cols-2">
-        <Column title="Your close today" variant="without" items={rows.map((r) => r[0])} />
-        <Column title="Your close with Nodes" variant="with" items={rows.map((r) => r[1])} />
+        <Column title="Before" variant="without" items={before} />
+        <Column title="With Nodes" variant="with" items={withNodes} />
       </div>
-
-      <p className="mt-8 text-lg font-semibold text-neutral-900">
-        Nodes does the tying out. You get the leftovers, with everything you need already on screen.
-      </p>
     </Section>
   );
 }
