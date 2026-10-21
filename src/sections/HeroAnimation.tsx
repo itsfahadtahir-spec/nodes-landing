@@ -46,7 +46,7 @@ export function HeroAnimation({ initialScene = 1, autoplay: autoplayProp = true 
   const reduce = useReducedMotion();
   const [scene, setScene] = useState<Scene>(reduce ? 3 : initialScene);
   const [playing, setPlaying] = useState(autoplayProp && !reduce);
-  const [count, setCount] = useState("1,000");
+  const [count, setCount] = useState("1,000+");
   const [done, setDone] = useState(false);
   const [wires, setWires] = useState<{ d: string; i: number }[]>([]);
   const s1Ref = useRef<HTMLDivElement>(null);
@@ -86,7 +86,7 @@ export function HeroAnimation({ initialScene = 1, autoplay: autoplayProp = true 
       const tick = (now: number) => {
         const p = Math.min(1, (now - t0) / 1100);
         const e = 1 - Math.pow(1 - p, 3);
-        setCount(Math.round(1000 * e).toLocaleString("en-US"));
+        setCount(p < 1 ? Math.round(1000 * e).toLocaleString("en-US") : "1,000+");
         if (p < 1) raf = requestAnimationFrame(tick);
       };
       raf = requestAnimationFrame(tick);
@@ -180,7 +180,7 @@ export function HeroAnimation({ initialScene = 1, autoplay: autoplayProp = true 
         <section className={`nx-scene ${scene === 2 ? "on" : ""}`} aria-label="Step 2, reconcile with rules" aria-hidden={scene !== 2}>
           <p className="eyebrow">2 · Tie out by rule</p>
           <div className="big">
-            <span className="v num">{reduce ? "1,000" : count}</span>
+            <span className="v num">{reduce ? "1,000+" : count}</span>
             <span className="l">Transactions assessed</span>
           </div>
           <div className="bar" role="img" aria-label="Most transactions reconciled by rules, the remainder sent to review">
