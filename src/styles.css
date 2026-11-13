@@ -127,6 +127,8 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  padding-inline-end: 0.08em;
+  margin-inline-end: -0.08em;
 }
 .reveal {
   opacity: 0;

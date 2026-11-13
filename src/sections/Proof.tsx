@@ -39,7 +39,7 @@ export function Proof() {
           {results.map((r, i) => (
             <Reveal key={r.value} delay={i * 120}>
               <div className="flex items-center gap-6 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6 sm:p-7">
-                <span className="num text-gradient w-28 shrink-0 text-5xl font-semibold tracking-[-0.045em] sm:text-6xl">
+                <span className="num text-gradient w-[7.5rem] shrink-0 text-5xl sm:w-40 font-semibold tracking-[-0.045em] sm:text-6xl">
                   {r.value}
                 </span>
                 <span className="text-lg leading-7 text-white/75">{r.body}</span>

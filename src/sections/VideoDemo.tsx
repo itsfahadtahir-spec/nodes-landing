@@ -44,10 +44,10 @@ export function VideoDemo() {
                 aria-label="Play the Nodes product demo"
               >
                 <img
-                  src="/nodes-demo-thumb.png"
+                  src="/nodes-demo-cover.webp"
                   alt=""
-                  width={1024}
-                  height={576}
+                  width={2560}
+                  height={1440}
                   loading="lazy"
                   decoding="async"
                   className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
