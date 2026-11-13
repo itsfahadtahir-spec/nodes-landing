@@ -20,7 +20,7 @@ const reassurances = ["Live walkthrough with the builder", "No AI in any match",
 function FloatCard({ className, children }: { className: string; children: React.ReactNode }) {
   return (
     <div
-      className={`float-y absolute z-20 hidden w-[250px] rounded-2xl border border-white/10 bg-ink-800/80 p-4 text-left text-[13px] text-white shadow-[0_30px_60px_-20px_rgb(0_0_0/0.7)] backdrop-blur-xl min-[1500px]:block ${className}`}
+      className={`float-y absolute z-20 hidden w-[250px] rounded-2xl border border-white/10 bg-ink-800/80 p-4 text-left text-[13px] text-white shadow-[0_30px_60px_-20px_rgb(0_0_0/0.7)] backdrop-blur-xl min-[1560px]:block ${className}`}
     >
       {children}
     </div>
@@ -98,7 +98,7 @@ export function Hero() {
             </div>
           </div>
 
-          <FloatCard className="-left-[205px] top-[70px]">
+          <FloatCard className="-left-[238px] top-[70px]">
             <div className="flex items-center gap-2">
               <span className="grid size-7 place-items-center rounded-lg bg-teal-400/15 text-teal-300">
                 <ShieldCheck size={15} aria-hidden="true" />
@@ -118,7 +118,7 @@ export function Hero() {
             </div>
           </FloatCard>
 
-          <FloatCard className="-right-[205px] bottom-[90px] [animation-delay:-3.5s]">
+          <FloatCard className="-right-[238px] bottom-[90px] [animation-delay:-3.5s]">
             <span className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-md bg-ai/25 px-2 py-1 font-mono text-[10px] font-semibold tracking-[0.06em] text-[#C9C1FF]">
               <Sparkles size={11} aria-hidden="true" /> AI EXPLANATION · ADVISORY
             </span>
