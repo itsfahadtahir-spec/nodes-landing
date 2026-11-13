@@ -3,7 +3,8 @@
 // portfolio only. It intentionally does not link the live workspace, source
 // code or implementation repositories.
 export const links = {
-  demoRequest: "mailto:itsfahadtahir@gmail.com?subject=Nodes%20demo%20request",
+  demoRequest:
+    "mailto:itsfahadtahir@gmail.com?subject=Nodes%20demo%20request&body=Name%3A%0ACompany%3A%0ARole%3A%0AWhat%20I%27d%20like%20to%20see%3A%0A",
   productOverview: "https://youtu.be/wSmjMcULRRM",
   linkedin: "https://www.linkedin.com/in/fahadtahiruae/",
   portfolio: "https://fahadtahir.vercel.app",
@@ -11,7 +12,7 @@ export const links = {
 
 export type TrackEvent = "cta_demo_request" | "cta_product_overview" | "cta_linkedin_click";
 
-export type CtaLocation = "nav" | "hero" | "faq" | "final" | "footer";
+export type CtaLocation = "nav" | "hero" | "tour" | "proof" | "faq" | "final" | "footer" | "sticky" | "video";
 
 declare global {
   interface Window {
