@@ -161,10 +161,6 @@
     border-radius: 14px;
   }
 }
-.on-ink .nx-window {
-  border-color: rgb(255 255 255 / 0.12);
-  box-shadow: 0 40px 80px -30px rgb(0 0 0 / 0.8);
-}
 
 /* ------------------------------------------------------------------ */
 /* Hero product window (ported from animation/nodes-hero-animation.html) */
@@ -292,3 +288,15 @@
   .s3 { grid-template-columns: 1fr; }
   .nx-bar .s { display: none; }
 }
+
+/* Product tour */
+@keyframes tour-progress {
+  from { width: 0; }
+  to { width: 100%; }
+}
+.tour-progress { animation: tour-progress linear forwards; }
+@keyframes tour-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+.tour-in { animation: tour-in 420ms var(--ease-standard) both; }
