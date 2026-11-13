@@ -1,44 +1,48 @@
-import { Eyebrow, H2, Section } from "../components/ui";
+import { H2, Reveal, Section } from "../components/ui";
+
+const principles = [
+  ["Calculation", "Clear rules"],
+  ["Review", "Visible evidence"],
+  ["Interpretation", "AI, only where it helps"],
+  ["Decision", "Finance, always"],
+];
 
 export function About() {
   return (
-    <Section id="about" tone="muted">
-      <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-20">
-        <div className="max-w-2xl">
-          <Eyebrow>About Fahad</Eyebrow>
+    <Section id="about" tone="raised">
+      <div className="grid gap-14 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:items-center lg:gap-20">
+        <Reveal className="max-w-2xl">
+          <p className="eyebrow mb-4">About Fahad</p>
           <H2>Built from a finance problem, not an AI demo.</H2>
-          <p className="mt-6 text-lg leading-8 text-neutral-700">
+          <p className="mt-6 text-lg leading-8 text-white/65">
             I built Nodes to explore how finance teams can reduce repetitive reconciliation work without weakening
             review, control or accountability.
           </p>
-          <p className="mt-4 text-lg leading-8 text-neutral-700">
+          <p className="mt-4 text-lg leading-8 text-white/65">
             My background spans FP&amp;A, accounting, management reporting, ERP implementation and UAT, commercial
-            finance and finance transformation.
+            finance and finance transformation. That shaped every design decision in the product.
           </p>
-          <p className="mt-4 text-lg leading-8 text-neutral-700">That shaped the way Nodes was designed:</p>
-          <ul className="mt-4 space-y-2">
-            {[
-              "clear rules for calculation,",
-              "visible evidence for review,",
-              "AI used only where interpretation helps,",
-              "and Finance retaining decision authority.",
-            ].map((l) => (
-              <li key={l} className="border-l-2 border-teal-700 pl-4 text-lg leading-8 text-neutral-800">
-                {l}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-8 text-lg font-semibold text-neutral-900">Fahad Tahir</p>
-          <p className="mt-1 text-sm font-medium text-neutral-600">
+          <p className="mt-8 text-lg font-semibold text-white">Fahad Tahir</p>
+          <p className="mt-1 text-sm font-medium text-white/50">
             Finance Business Partner · FP&amp;A · Commercial Finance · Finance Transformation
           </p>
-        </div>
-        <div className="hidden lg:block">
-          <div
-            aria-hidden="true"
-            className="aspect-square w-full rounded-lg border border-neutral-200 bg-[linear-gradient(135deg,#ECFEFF,#F8FAFC)]"
-          />
-        </div>
+        </Reveal>
+
+        <Reveal delay={120}>
+          <div className="rounded-[22px] border border-white/10 bg-ink-950/60 p-3">
+            <p className="px-4 pb-3 pt-2 font-mono text-[11px] uppercase tracking-[0.14em] text-white/40">
+              Design principles
+            </p>
+            <dl className="divide-y divide-white/[0.06] rounded-2xl border border-white/[0.08] bg-ink-900">
+              {principles.map(([k, v]) => (
+                <div key={k} className="flex items-center justify-between gap-6 px-5 py-5">
+                  <dt className="text-sm text-white/50">{k}</dt>
+                  <dd className="text-right text-lg font-semibold text-white">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </Reveal>
       </div>
     </Section>
   );
